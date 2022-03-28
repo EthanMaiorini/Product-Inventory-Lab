@@ -7,4 +7,12 @@ public class Comics {
     private int qty;
     private double grade;
     private float price;
+
+    public void setName(String expected) {
+        this.name = expected;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 }
