@@ -11,4 +11,12 @@ public class Tshirts {
     private Color color;
     private int qty;
     private float price;
+
+    public void setName(String expected) {
+        this.name = expected;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 }
