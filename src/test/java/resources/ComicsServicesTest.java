@@ -58,7 +58,7 @@ public class ComicsServicesTest {
                 expectedIssueNumber, expectedGrade, expectedQty, expectedPrice);
 
         // (3)
-        Comics actualComic = comicService.findComics(0);
+        Comics actualComic = comicService.findComics(testComic.getId());
         int actualId = actualComic.getId();
         String actualName = actualComic.getName();
         String actualPublisher = actualComic.getPublisher();

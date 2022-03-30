@@ -23,12 +23,18 @@ public class ComicsServices {
     //read
     public Comics findComics(int id) {
         // should take an int and return an object with that id, if exists
-
-        return inventory.get(id);
+         Comics comic;
+         for(Comics c: inventory){
+             if(c.getId() == id)
+                 return c;
+         }
+         return null;
     }
 
     public int getId(Comics name){
-        return inventory.indexOf(name);
+        int x = inventory.indexOf(name);
+        Comics comic = inventory.get(x);
+        return comic.getId();
     }
 
     //read all
@@ -47,8 +53,9 @@ public class ComicsServices {
     public boolean delete(int id) {
         // should remove the object with this id from the ArrayList if exits and return true.
         // Otherwise return false
-        if(inventory.contains(id)) {
-            inventory.remove(id);
+        Comics comic = findComics(id);
+        if(comic != null) {
+            inventory.remove(comic);
             return true;
         }
         return false;
