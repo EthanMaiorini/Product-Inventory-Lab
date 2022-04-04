@@ -50,4 +50,10 @@ public class Comics {
     public float getPrice() {
         return this.price;
     }
+    @Override
+    public String toString(){
+        return "Id: "+this.id+" Name: "+this.name+" Publisher: "+this.publisher+" Issue Number: "+this.issueNumber
+                +" Quantity; "+this.qty+" Grade: "+this.grade+" Price: "+this.price+"\n";
+    }
+
 }
