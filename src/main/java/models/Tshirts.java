@@ -53,4 +53,12 @@ public class Tshirts {
     public float getPrice() {
         return this.price;
     }
+
+    public void setQty(int qty){this.qty = qty;}
+
+    @Override
+    public String toString(){
+        return "Id: "+this.id+" Name: "+this.name+" Brand: "+this.brand+" Size: "+this.size
+                +" Quantity; "+this.qty+" Color: "+this.color+" Price: "+this.price+"\n";
+    }
 }

@@ -61,4 +61,8 @@ public class TshirtServices {
         }
         return false;
     }
+
+    public void changeInventory(int id, int amount){
+        inventory.get(id).setQty(amount);
+    }
 }

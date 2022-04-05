@@ -50,6 +50,8 @@ public class Comics {
     public float getPrice() {
         return this.price;
     }
+
+    public void setQty(int qty){this.qty = qty;}
     @Override
     public String toString(){
         return "Id: "+this.id+" Name: "+this.name+" Publisher: "+this.publisher+" Issue Number: "+this.issueNumber
