@@ -1,8 +1,14 @@
 package services;
 
 import models.Comics;
+import utils.CSVUtils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ComicsServices {
@@ -64,4 +70,54 @@ public class ComicsServices {
     public void changeInventory(int id, int amount){
         inventory.get(id).setQty(amount);
     }
+    public void saveData() throws IOException {
+        String csvFile = "/Users/ethan/dev/Product-Inventory-Lab/src/Comics.csv";
+        FileWriter writer = new FileWriter(csvFile);
+
+        CSVUtils.writeLine(writer, new ArrayList<String>(Arrays.asList(String.valueOf(nextId))));
+
+        for (Comics s : inventory) {
+            List<String> list = new ArrayList<>();
+            list.add(String.valueOf(s.getId()));
+            list.add(s.getName());
+            list.add(s.getPublisher());
+            list.add(String.valueOf(s.getIssueNumber()));
+            list.add(String.valueOf(s.getQty()));
+            list.add(String.valueOf(s.getGrade()));
+            list.add(String.valueOf(s.getPrice()));
+
+            CSVUtils.writeLine(writer, list);
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    public void loadData(){
+        String csvFile = "/Users/ethan/dev/Product-Inventory-Lab/src/Comics.csv";
+        String line = "";
+        String csvSplitBy = ",";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            nextId = Integer.parseInt(br.readLine());
+
+            while ((line = br.readLine()) != null) {
+                // split line with comma
+                String[] beer = line.split(csvSplitBy);
+
+                int id = Integer.parseInt(beer[0]);
+                String name = beer[1];
+                String publisher = beer[2];
+                int issueNumber = Integer.parseInt(beer[3]);
+                int qty = Integer.parseInt(beer[4]);
+                double grade = Double.parseDouble(beer[5]);
+                float price = Float.parseFloat(beer[6]);
+
+                // (5)
+                inventory.add(new Comics(id, name, publisher, issueNumber, qty, grade, price));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

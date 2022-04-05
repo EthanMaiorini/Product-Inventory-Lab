@@ -2,9 +2,15 @@ package services;
 
 import models.Comics;
 import models.Tshirts;
+import utils.CSVUtils;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TshirtServices {
@@ -64,5 +70,55 @@ public class TshirtServices {
 
     public void changeInventory(int id, int amount){
         inventory.get(id).setQty(amount);
+    }
+
+    public void saveData() throws IOException {
+        String csvFile = "/Users/ethan/Desktop/Tshirts.csv";
+        FileWriter writer = new FileWriter(csvFile); //(1)
+
+        CSVUtils.writeLine(writer, new ArrayList<String>(Arrays.asList(String.valueOf(nextId))));  // (2)
+
+        for (Tshirts s : inventory) {
+            List<String> list = new ArrayList<>(); // (3)
+            list.add(String.valueOf(s.getId()));
+            list.add(s.getName());
+            list.add(s.getBrand());
+            list.add(String.valueOf(s.getSize()));
+            list.add(String.valueOf(s.getColor()));
+            list.add(String.valueOf(s.getQty()));
+            list.add(String.valueOf(s.getPrice()));
+
+            CSVUtils.writeLine(writer, list);
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    public void loadData(){
+        String csvFile = "/Users/ethan/dev/Product-Inventory-Lab/Tshirts.csv";
+        String line = "";
+        String csvSplitBy = ",";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            nextId = Integer.parseInt(br.readLine());
+
+            while ((line = br.readLine()) != null) {
+                // split line with comma
+                String[] beer = line.split(csvSplitBy);
+
+                int id = Integer.parseInt(beer[0]);
+                String name = beer[1];
+                String brand = beer[2];
+                int size = Integer.parseInt(beer[3]);
+                Color color = Color.decode(beer[4]);
+                int qty = Integer.parseInt(beer[5]);
+                float price = Float.parseFloat(beer[6]);
+
+                // (5)
+                inventory.add(new Tshirts(id, name, brand, size, color, qty, price));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

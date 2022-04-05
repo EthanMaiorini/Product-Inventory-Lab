@@ -4,19 +4,23 @@ import models.Tshirts;
 import services.ComicsServices;
 import services.TshirtServices;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class App {
     private ComicsServices comicsService = new ComicsServices(); // (1)
     private TshirtServices tshirtServices = new TshirtServices();
 
-    public static void main(String... args){
+    public static void main(String... args) throws IOException {
         App application = new App(); // (2)
         application.init();  // (3)
     }
 
-    public void init(){
+    public void init() throws IOException {
         Scanner sc = new Scanner(System.in);
+        //1
+         comicsService.loadData();
+      //  tshirtServices.loadData();
         // (4)
         // application logic here
         // call methods to take user input and interface with services
@@ -32,6 +36,8 @@ public class App {
             Console.inventoryChoiceScreen();
             runTshirtMethods(sc.nextInt());
         }else System.out.println("Enter a valid choice.");
+        comicsService.saveData();
+        tshirtServices.saveData();
     }
 
     private void runTshirtMethods(int nextInt) {
