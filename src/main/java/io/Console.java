@@ -73,7 +73,7 @@ public class Console {
         System.out.println("Please enter the size: ");
         int num = scanner.nextInt();
         System.out.println("Please enter the color: ");
-        Color color = Color.decode(scanner.next());
+        String color = scanner.next();
         System.out.println("Please enter the quantity number: ");
         int qty = scanner.nextInt();
         System.out.println("Please enter the price: ");

@@ -19,7 +19,7 @@ public class TshirtsServicesTest {
         String expectedBrand = "Marvel";
         int expectedSize = 10;
         int expectedQty = 10;
-        Color expectedColor = Color.BLACK;
+        String expectedColor = "Black";
         float expectedPrice = 80.00f;
 
         // (2)
@@ -32,7 +32,7 @@ public class TshirtsServicesTest {
         String actualName = testTshirts.getName();
         String actualBrand = testTshirts.getBrand();
         int actualSize = testTshirts.getSize();
-        Color actualColor = testTshirts.getColor();
+        String actualColor = testTshirts.getColor();
         int actualQty = testTshirts.getQty();
         float actualPrice = testTshirts.getPrice();
 
@@ -54,7 +54,7 @@ public class TshirtsServicesTest {
         String expectedBrand = "Marvel";
         int expectedSize = 10;
         int expectedQty = 10;
-        Color expectedColor = Color.BLACK;
+        String expectedColor = "Black";
         float expectedPrice = 80.00f;
 
         // (2)
@@ -67,7 +67,7 @@ public class TshirtsServicesTest {
         int actualId = actualTshirts.getId();
         String actualName = actualTshirts.getName();
         String actualBrand = actualTshirts.getBrand();
-        Color actualColor = actualTshirts.getColor();
+        String actualColor = actualTshirts.getColor();
         int actualSize = actualTshirts.getSize();
         int actualQty = actualTshirts.getQty();
         float actualPrice = actualTshirts.getPrice();
@@ -90,7 +90,7 @@ public class TshirtsServicesTest {
         String expectedBrand = "Marvel";
         int expectedSize = 10;
         int expectedQty = 10;
-        Color expectedColor = Color.BLACK;
+        String expectedColor = "Black";
         float expectedPrice = 80.00f;
 
         // (2)
@@ -103,7 +103,7 @@ public class TshirtsServicesTest {
         int actualId = actualTshirts[0].getId();
         String actualName = actualTshirts[0].getName();
         String actualBrand = actualTshirts[0].getBrand();
-        Color actualColor = actualTshirts[0].getColor();
+        String actualColor = actualTshirts[0].getColor();
         int actualSize = actualTshirts[0].getSize();
         int actualQty = actualTshirts[0].getQty();
         float actualPrice = actualTshirts[0].getPrice();
@@ -125,7 +125,7 @@ public class TshirtsServicesTest {
         String expectedBrand = "Marvel";
         int expectedSize = 10;
         int expectedQty = 10;
-        Color expectedColor = Color.BLACK;
+        String expectedColor = "Black";
         float expectedPrice = 80.00f;
 
         // (2)

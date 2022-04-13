@@ -1,12 +1,13 @@
 package services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import models.Comics;
 import utils.CSVUtils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,12 +30,22 @@ public class ComicsServices {
     //read
     public Comics findComics(int id) {
         // should take an int and return an object with that id, if exists
-         Comics comic;
+         //Comics comic;
          for(Comics c: inventory){
              if(c.getId() == id)
                  return c;
          }
          return null;
+    }
+
+    public int getIndex(String name){
+        int x = 0;
+        for(Comics c: inventory){
+            if(c.getName().equals(name))
+                return x;
+            x++;
+        }
+        return -1;
     }
 
     public int getId(Comics name){
@@ -68,7 +79,9 @@ public class ComicsServices {
     }
 
     public void changeInventory(int id, int amount){
-        inventory.get(id).setQty(amount);
+         Comics c = findComics(id);
+         int x = getIndex(c.getName());
+         inventory.get(x).setQty(amount);
     }
     public void saveData() throws IOException {
         String csvFile = "/Users/ethan/dev/Product-Inventory-Lab/src/Comics.csv";
@@ -76,23 +89,26 @@ public class ComicsServices {
 
         CSVUtils.writeLine(writer, new ArrayList<String>(Arrays.asList(String.valueOf(nextId))));
 
-        for (Comics s : inventory) {
-            List<String> list = new ArrayList<>();
-            list.add(String.valueOf(s.getId()));
-            list.add(s.getName());
-            list.add(s.getPublisher());
-            list.add(String.valueOf(s.getIssueNumber()));
-            list.add(String.valueOf(s.getQty()));
-            list.add(String.valueOf(s.getGrade()));
-            list.add(String.valueOf(s.getPrice()));
-
-            CSVUtils.writeLine(writer, list);
-        }
+//        for (Comics s : inventory) {
+//            List<String> list = new ArrayList<>();
+//            list.add(String.valueOf(s.getId()));
+//            list.add(s.getName());
+//            list.add(s.getPublisher());
+//            list.add(String.valueOf(s.getIssueNumber()));
+//            list.add(String.valueOf(s.getQty()));
+//            list.add(String.valueOf(s.getGrade()));
+//            list.add(String.valueOf(s.getPrice()));
+//
+//            CSVUtils.writeLine(writer, list);
+//        }
         writer.flush();
         writer.close();
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer1 = mapper.writer(new DefaultPrettyPrinter());
+        writer1.writeValue(new File("comics.json"), inventory);
     }
 
-    public void loadData(){
+    public void loadData() throws IOException {
         String csvFile = "/Users/ethan/dev/Product-Inventory-Lab/src/Comics.csv";
         String line = "";
         String csvSplitBy = ",";
@@ -100,24 +116,26 @@ public class ComicsServices {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             nextId = Integer.parseInt(br.readLine());
 
-            while ((line = br.readLine()) != null) {
-                // split line with comma
-                String[] beer = line.split(csvSplitBy);
-
-                int id = Integer.parseInt(beer[0]);
-                String name = beer[1];
-                String publisher = beer[2];
-                int issueNumber = Integer.parseInt(beer[3]);
-                int qty = Integer.parseInt(beer[4]);
-                double grade = Double.parseDouble(beer[5]);
-                float price = Float.parseFloat(beer[6]);
-
-                // (5)
-                inventory.add(new Comics(id, name, publisher, issueNumber, qty, grade, price));
-            }
+//            while ((line = br.readLine()) != null) {
+//                // split line with comma
+//                String[] beer = line.split(csvSplitBy);
+//
+//                int id = Integer.parseInt(beer[0]);
+//                String name = beer[1];
+//                String publisher = beer[2];
+//                int issueNumber = Integer.parseInt(beer[3]);
+//                int qty = Integer.parseInt(beer[4]);
+//                double grade = Double.parseDouble(beer[5]);
+//                float price = Float.parseFloat(beer[6]);
+//
+//                // (5)
+//                inventory.add(new Comics(id, name, publisher, issueNumber, qty, grade, price));
+           // }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ObjectMapper objectMapper = new ObjectMapper();
+        this.inventory = objectMapper.readValue(new File("comics.json"), new TypeReference<List<Comics>>(){});
     }
 
 }

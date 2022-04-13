@@ -1,14 +1,15 @@
 package services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import models.Comics;
 import models.Tshirts;
 import utils.CSVUtils;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ public class TshirtServices {
 
     private static List<Tshirts> inventory = new ArrayList<>();  // (2)
 
-    public static Tshirts create(String expectedName, String expectedBrand, int expectedSize, Color expectedColor, int expectedQty, float expectedPrice) {
+    public static Tshirts create(String expectedName, String expectedBrand, int expectedSize, String expectedColor, int expectedQty, float expectedPrice) {
         Tshirts createdTshirt = new Tshirts(nextId++, expectedName, expectedBrand, expectedSize, expectedColor, expectedQty, expectedPrice);
 
         // (3)
@@ -36,6 +37,16 @@ public class TshirtServices {
                 return c;
         }
         return null;
+    }
+
+    public int getIndex(String name){
+        int x = 0;
+        for(Tshirts c: inventory){
+            if(c.getName().equals(name))
+                return x;
+            x++;
+        }
+        return -1;
     }
 
     public int getId(Tshirts name){
@@ -69,7 +80,9 @@ public class TshirtServices {
     }
 
     public void changeInventory(int id, int amount){
-        inventory.get(id).setQty(amount);
+        Tshirts c = findTshirts(id);
+        int x = getIndex(c.getName());
+        inventory.get(x).setQty(amount);
     }
 
     public void saveData() throws IOException {
@@ -78,23 +91,26 @@ public class TshirtServices {
 
         CSVUtils.writeLine(writer, new ArrayList<String>(Arrays.asList(String.valueOf(nextId))));  // (2)
 
-        for (Tshirts s : inventory) {
-            List<String> list = new ArrayList<>(); // (3)
-            list.add(String.valueOf(s.getId()));
-            list.add(s.getName());
-            list.add(s.getBrand());
-            list.add(String.valueOf(s.getSize()));
-            list.add(String.valueOf(s.getColor()));
-            list.add(String.valueOf(s.getQty()));
-            list.add(String.valueOf(s.getPrice()));
-
-            CSVUtils.writeLine(writer, list);
-        }
+//        for (Tshirts s : inventory) {
+//            List<String> list = new ArrayList<>(); // (3)
+//            list.add(String.valueOf(s.getId()));
+//            list.add(s.getName());
+//            list.add(s.getBrand());
+//            list.add(String.valueOf(s.getSize()));
+//            list.add(String.valueOf(s.getColor()));
+//            list.add(String.valueOf(s.getQty()));
+//            list.add(String.valueOf(s.getPrice()));
+//
+//            CSVUtils.writeLine(writer, list);
+//        }
         writer.flush();
         writer.close();
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer1 = mapper.writer(new DefaultPrettyPrinter());
+        writer1.writeValue(new File("tshirts.json"), inventory);
     }
 
-    public void loadData(){
+    public void loadData() throws IOException {
         String csvFile = "/Users/ethan/dev/Product-Inventory-Lab/Tshirts.csv";
         String line = "";
         String csvSplitBy = ",";
@@ -102,23 +118,25 @@ public class TshirtServices {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             nextId = Integer.parseInt(br.readLine());
 
-            while ((line = br.readLine()) != null) {
-                // split line with comma
-                String[] beer = line.split(csvSplitBy);
-
-                int id = Integer.parseInt(beer[0]);
-                String name = beer[1];
-                String brand = beer[2];
-                int size = Integer.parseInt(beer[3]);
-                Color color = Color.decode(beer[4]);
-                int qty = Integer.parseInt(beer[5]);
-                float price = Float.parseFloat(beer[6]);
-
-                // (5)
-                inventory.add(new Tshirts(id, name, brand, size, color, qty, price));
-            }
+//            while ((line = br.readLine()) != null) {
+//                // split line with comma
+//                String[] beer = line.split(csvSplitBy);
+//
+//                int id = Integer.parseInt(beer[0]);
+//                String name = beer[1];
+//                String brand = beer[2];
+//                int size = Integer.parseInt(beer[3]);
+//                Color color = Color.decode(beer[4]);
+//                int qty = Integer.parseInt(beer[5]);
+//                float price = Float.parseFloat(beer[6]);
+//
+//                // (5)
+//                inventory.add(new Tshirts(id, name, brand, size, color, qty, price));
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ObjectMapper objectMapper = new ObjectMapper();
+        this.inventory = objectMapper.readValue(new File("tshirts.json"), new TypeReference<List<Tshirts>>(){});
     }
 }

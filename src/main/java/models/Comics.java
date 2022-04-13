@@ -19,6 +19,9 @@ public class Comics {
         this.price = expectedPrice;
     }
 
+    public Comics(){
+    }
+
     public void setName(String expected) {
         this.name = expected;
     }

@@ -12,7 +12,7 @@ public class TshirtsTest {
         String expected = "OZWEEGO";
 
         // when (2)
-        Tshirts testTshirt = new Tshirts(3," ","Hanes",3,Color.BLACK,3,5.98f);
+        Tshirts testTshirt = new Tshirts(3," ","Hanes",3,"Black",3,5.98f);
         testTshirt.setName(expected);
 
         // then (3)
@@ -27,7 +27,7 @@ public class TshirtsTest {
         String expectedName = "Amazing Spiderman";
         String expectedBrand = "Marvel";
         int expectedSize = 75;
-        Color expectedColor = Color.BLACK;
+        String expectedColor = "Black";
         int expectedQty = 10;
         float expectedPrice = 6.00f;
 

@@ -8,11 +8,11 @@ public class Tshirts {
     private String name;
     private String brand;
     private int size;
-    private Color color;
+    private  String color;
     private int qty;
     private float price;
 
-    public Tshirts(int expectedId, String expectedName, String expectedBrand, int expectedSize, Color expectedColor, int expectedQty, float expectedPrice) {
+    public Tshirts(int expectedId, String expectedName, String expectedBrand, int expectedSize, String expectedColor, int expectedQty, float expectedPrice) {
         this.id = expectedId;
         this.name = expectedName;
         this.brand = expectedBrand;
@@ -46,7 +46,7 @@ public class Tshirts {
         return this.qty;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return this.color;
     }
 

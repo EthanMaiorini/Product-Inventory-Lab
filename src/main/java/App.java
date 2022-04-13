@@ -18,7 +18,7 @@ public class App {
 
     public void init() throws IOException {
         Scanner sc = new Scanner(System.in);
-        //1
+        //
          comicsService.loadData();
       //  tshirtServices.loadData();
         // (4)
